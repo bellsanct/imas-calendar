@@ -47,6 +47,12 @@ foreach ($calendar_ids as $prefix => $calendar) {
         $minute = mb_substr($minute, 0, 2);
       }
 
+      //分に「~」がある場合
+      if (strpos($minute, "~") !== false) {
+        //分の部分だけ抜き出す
+        $minute = mb_substr($minute, 0, 2);
+      }
+
       //分に「開場」がある場合
       if (strpos($minute, "開場") !== false) {
         //分の部分だけ抜き出す

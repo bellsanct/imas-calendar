@@ -65,6 +65,20 @@ foreach ($calendar_ids as $prefix => $calendar) {
         $minute = mb_substr($minute, 0, 2);
       }
 
+      //時に「AM」がある場合
+      if (strpos($hour, "AM") !== false) {
+        //分の部分だけ抜き出す
+        $hour = mb_substr($hour, 2, 3);
+      }
+
+      //時に「PM」がある場合
+      if (strpos($hour, "PM") !== false) {
+        //分の部分だけ抜き出す
+        $hour = mb_substr($hour, 2, 3);
+        (int)$hour += 12;
+      }
+
+
       $start = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
       $start = $start->format("c");
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);

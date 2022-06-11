@@ -65,6 +65,8 @@ foreach ($prefixes as $prefix) {
       //スケジュール
       $schedule = strip_tags($val);
       $schedule = str_replace("\n", "", $schedule);
+      //この欄に空白スペースが入る事象があったので対策としてtrimする
+      $schedule = trim($schedule);
       $plan_array[$date_count]["schedule"][] = $schedule;
     }
     if (strpos($val, "href") !== false) {

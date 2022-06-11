@@ -98,6 +98,21 @@ foreach ($calendar_ids as $prefix => $calendar) {
         $end = Carbon::create(date("Y"), $end_date[0], $end_date[1], 10, 0);
         $end = $end->format("c");
       }
+     } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}~[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
+      $summary = $value["text"][0];
+      $description = $value["text"][0] . "\n" . $value["link"][0];
+      // m/dd~m/dd形式
+      // ~でstart end 分割
+      if (strpos($value["schedule"][0], "~") !== false) {
+        //分の部分だけ抜き出す
+        $dates = explode("~", $value["schedule"][0]);
+        $start_date = explode("/", $dates[0]); // x/xx
+        $end_date = explode("/", $dates[1]); // x/xx
+        $start = Carbon::create(date("Y"), $start_date[0], $start_date[1], 10, 0);
+        $start = $start->format("c");
+        $end = Carbon::create(date("Y"), $end_date[0], $end_date[1], 10, 0);
+        $end = $end->format("c");
+      }
     } elseif (strpos($value["schedule"][0], "発売日") !== false) {
       // xx:xx のフォーマットじゃないもの　例) 発売日
       $summary = "[発売日]" . $value["text"][0];

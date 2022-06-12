@@ -1,15 +1,16 @@
 # aonori-imas-calendar
 
-プロデューサースケジュール表から GoogleCalendar へ自動でイベント登録するもの。
+プロデューサースケジュール表から予定を抽出し、 GoogleCalendar へ自動でイベント登録するもの。
 
 ---
 ## 実行方法
 
 1. 事前に GoogleCalendarAPI の設定 json ファイルを用意する
-1. 該当 json ファイルを本プロジェクトディレクトリ直下に配置し、各ソースの$aimJsonPath を該当ファイル名にする
-1. `php run.php`
+2. 該当 json ファイルを本プロジェクトディレクトリ直下に配置し、各ソースの$aimJsonPath を該当ファイル名にする
+3. `composer install`する
+4. `php run.php`
 
-各カレンダーのリンク
+各カレンダーのリンク(Google Calendar)
 
 - アイドルマスター
   > https://calendar.google.com/calendar/u/0?cid=ZTVtaXNsMHU3NTFoYmNqYjA1cG1yYjlncmNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ

@@ -70,9 +70,7 @@ foreach ($calendar_id as $prefix => $calendar) {
         (int)$hour += 12;
       }
       $start = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
-      $start = $start->format("c");
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
-      $end = $end->format("c");
     } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}～[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
       $summary = $value["text"][0];
       $description = $value["text"][0] . "\n" . $value["link"][0];
@@ -84,9 +82,7 @@ foreach ($calendar_id as $prefix => $calendar) {
         $start_date = explode("/", $dates[0]); // x/xx
         $end_date = explode("/", $dates[1]); // x/xx
         $start = Carbon::create(date("Y"), $start_date[0], $start_date[1], 10, 0);
-        $start = $start->format("c");
         $end = Carbon::create(date("Y"), $end_date[0], $end_date[1], 10, 0);
-        $end = $end->format("c");
       }
      } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}~[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
       $summary = $value["text"][0];
@@ -99,9 +95,7 @@ foreach ($calendar_id as $prefix => $calendar) {
         $start_date = explode("/", $dates[0]); // x/xx
         $end_date = explode("/", $dates[1]); // x/xx
         $start = Carbon::create(date("Y"), $start_date[0], $start_date[1], 10, 0);
-        $start = $start->format("c");
         $end = Carbon::create(date("Y"), $end_date[0], $end_date[1], 10, 0);
-        $end = $end->format("c");
       }
     } elseif (strpos($value["schedule"][0], "発売日") !== false) {
       // xx:xx のフォーマットじゃないもの　例) 発売日
@@ -111,21 +105,20 @@ foreach ($calendar_id as $prefix => $calendar) {
       //暫定処置として 10:00で登録
       //
       $start = Carbon::create(date("Y"), date("m"), $value["date"][0], 10, 0);
-      $start = $start->format("c");
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], 10, 0);
-      $end = $end->format("c");
     } else {
       //発売日ではない
       $summary = $value["text"][0];
       $description = $value["text"][0] . "\n" . $value["link"][0];
       //echo $value["schedule"][0];
       //暫定処置として 10:00で登録
-      //
       $start = Carbon::create(date("Y"), date("m"), $value["date"][0], 10, 0);
-      $start = $start->format("c");
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], 10, 0);
-      $end = $end->format("c");
     }
+
+    //開始時刻と終了時刻をISO 8601に
+    $start = $start->format("c");
+    $end = $end->format("c");
 
     //create events
     $event = new Google_Service_Calendar_Event([

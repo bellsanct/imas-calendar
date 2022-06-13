@@ -1,6 +1,7 @@
 <?php
 date_default_timezone_set("Asia/Tokyo");
 require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/config.php";
 $aimJsonPath = __DIR__ . "/aonori.json";
 
 use Carbon\Carbon;
@@ -15,17 +16,8 @@ $client->setAuthConfig($aimJsonPath);
 //create service
 $service = new Google_Service_Calendar($client);
 
-//calendar id
-$calendar_ids = [
-  "765" => "e5misl0u751hbcjb05pmrb9grc@group.calendar.google.com",
-//  "cg" => "bt23tob13vcs7b031ek6v1plos@group.calendar.google.com",
-  "ml" => "0sdrrc665qu1rtql8bvr3jhfc4@group.calendar.google.com",
-  "sc" => "ggplrmmqnhclf314i15fvp4m4g@group.calendar.google.com",
-  "sm" => "9m2nlm3s1s1av97ol0qlffahng@group.calendar.google.com",
-];
-
 //add events
-foreach ($calendar_ids as $prefix => $calendar) {
+foreach ($calendar_id as $prefix => $calendar) {
   $json = file_get_contents(__DIR__ . "/result-" . $prefix . ".json");
   $json = mb_convert_encoding($json, "UTF-8");
   $array = json_decode($json, true);
@@ -77,8 +69,6 @@ foreach ($calendar_ids as $prefix => $calendar) {
         $hour = mb_substr($hour, 2, 3);
         (int)$hour += 12;
       }
-
-
       $start = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
       $start = $start->format("c");
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
@@ -136,7 +126,6 @@ foreach ($calendar_ids as $prefix => $calendar) {
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], 10, 0);
       $end = $end->format("c");
     }
-
 
     //create events
     $event = new Google_Service_Calendar_Event([

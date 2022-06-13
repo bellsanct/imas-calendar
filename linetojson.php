@@ -1,6 +1,5 @@
 <?php
-
-$prefixes = ["765", "cg", "ml", "sc", "sm"];
+require_once __DIR__ . "/config.php";
 
 foreach ($prefixes as $prefix) {
   $file = fopen(__DIR__ . "/out-" . $prefix . ".txt", "r");

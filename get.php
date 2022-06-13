@@ -1,11 +1,6 @@
 <?php
-$prefixes = [
-  "IDOLMASTER" => "765",
-  "CINDERELLAGIRLS" => "cg",
-  "MILLIONLIVE" => "ml",
-  "SHINYCOLORS" => "sc",
-  "SIDEM" => "sm",
-];
+require_once __DIR__ . "/config.php";
+
 
 foreach ($prefixes as $query => $prefix) {
   require_once __DIR__ . "/phpQuery-onefile.php";

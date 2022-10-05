@@ -69,6 +69,12 @@ foreach ($calendar_id as $prefix => $calendar) {
         $hour = mb_substr($hour, 2, 3);
         (int)$hour += 12;
       }
+
+      if(!check_time($hour, $minute)) {
+        $hour = 10;
+        $minute = 0;
+      }
+
       $start = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
       $end = Carbon::create(date("Y"), date("m"), $value["date"][0], $hour, $minute);
     } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}～[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
@@ -84,7 +90,7 @@ foreach ($calendar_id as $prefix => $calendar) {
         $start = Carbon::create(date("Y"), $start_date[0], $start_date[1], 10, 0);
         $end = Carbon::create(date("Y"), $end_date[0], $end_date[1], 10, 0);
       }
-     } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}~[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
+    } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}~[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
       $summary = $value["text"][0];
       $description = $value["text"][0] . "\n" . $value["link"][0];
       // m/dd~m/dd形式
@@ -92,6 +98,19 @@ foreach ($calendar_id as $prefix => $calendar) {
       if (strpos($value["schedule"][0], "~") !== false) {
         //分の部分だけ抜き出す
         $dates = explode("~", $value["schedule"][0]);
+        $start_date = explode("/", $dates[0]); // x/xx
+        $end_date = explode("/", $dates[1]); // x/xx
+        $start = Carbon::create(date("Y"), $start_date[0], $start_date[1], 10, 0);
+        $end = Carbon::create(date("Y"), $end_date[0], $end_date[1], 10, 0);
+      }
+    } elseif (preg_match("/[0-9]{1,2}[!-~][0-9]{1,2}-[0-9]{1,2}[!-~][0-9]{1,2}/", $value["schedule"][0])) {
+      $summary = $value["text"][0];
+      $description = $value["text"][0] . "\n" . $value["link"][0];
+      // m/dd-m/dd形式
+      // -でstart end 分割
+      if (strpos($value["schedule"][0], "-") !== false) {
+        //分の部分だけ抜き出す
+        $dates = explode("-", $value["schedule"][0]);
         $start_date = explode("/", $dates[0]); // x/xx
         $end_date = explode("/", $dates[1]); // x/xx
         $start = Carbon::create(date("Y"), $start_date[0], $start_date[1], 10, 0);
@@ -135,5 +154,15 @@ foreach ($calendar_id as $prefix => $calendar) {
     ]);
     $event = $service->events->insert($calendar, $event);
   }
+}
+
+function check_time($a, $b) {
+  echo "call check time" ."\n";
+  if (strlen((string)$a) === 2 && strlen((string)$b) === 2) {
+    echo "true" ."\n";
+    return true;
+  }
+  echo "false" . "\n";
+  return false;
 }
 ?>

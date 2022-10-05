@@ -157,12 +157,12 @@ foreach ($calendar_id as $prefix => $calendar) {
 }
 
 function check_time($a, $b) {
-  echo "call check time" ."\n";
+  //echo "call check time" ."\n";
   if (strlen((string)$a) === 2 && strlen((string)$b) === 2) {
-    echo "true" ."\n";
+    //echo "true" ."\n";
     return true;
   }
-  echo "false" . "\n";
+  //echo "false" . "\n";
   return false;
 }
 ?>
